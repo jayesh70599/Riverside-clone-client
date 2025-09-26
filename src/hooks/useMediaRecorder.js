@@ -83,7 +83,7 @@ export const useMediaRecorder = (roomId, socket) => {
     console.log(partNumber);
     console.log(blob);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/upload/multipart-url', {
+      const { data } = await axios.post('https://riverside-clone-server.onrender.com/api/upload/multipart-url', {
         key: sessionState.key,
         uploadId: sessionState.uploadId,
         partNumber: partNumber,
@@ -105,7 +105,7 @@ export const useMediaRecorder = (roomId, socket) => {
   const completeUpload = async (sessionState, sessionId, pendSessionId, pendRecordingId) => {
     if (!sessionState || !sessionState.key) return;
     try {
-      await axios.post('http://localhost:5000/api/upload/complete-multipart', {
+      await axios.post('https://riverside-clone-server.onrender.com/api/upload/complete-multipart', {
         key: sessionState.key,
         uploadId: sessionState.uploadId,
         parts: sessionState.parts,
@@ -258,7 +258,7 @@ export const useMediaRecorder = (roomId, socket) => {
         const s3FileKey = `${roomId}-${user._id}-${new Date().toISOString()}.webm`;
         activeSessionId.current = s3FileKey;
 
-        const { data } = await axios.post('http://localhost:5000/api/upload/start-multipart', {
+        const { data } = await axios.post('https://riverside-clone-server.onrender.com/api/upload/start-multipart', {
           fileName: s3FileKey,
           contentType: 'video/webm'
         }, { headers: { Authorization: `Bearer ${user.token}` } });

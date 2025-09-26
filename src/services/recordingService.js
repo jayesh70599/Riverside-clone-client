@@ -1,9 +1,16 @@
 // /client/src/services/recordingService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/recordings';
+// const API_URL = 'http://localhost:5000/api/recordings';
 
-const UPLOAD_API_URL = 'http://localhost:5000/api/upload';
+// const UPLOAD_API_URL = 'http://localhost:5000/api/upload';
+
+const API_URL = 'https://riverside-clone-server.onrender.com/api/recordings';
+
+const UPLOAD_API_URL = 'https://riverside-clone-server.onrender.com/api/upload';
+
+
+
 
 const getRecordings = async (studioId, token) => {
   const config = {

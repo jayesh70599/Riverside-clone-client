@@ -2,7 +2,9 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/users';
+//const API_URL = 'http://localhost:5000/api/users';
+
+const API_URL = 'https://riverside-clone-server.onrender.com/api/users';
 
 // Register user
 const register = (userData) => {
