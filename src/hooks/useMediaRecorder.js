@@ -290,7 +290,7 @@ export const useMediaRecorder = (roomId, socket) => {
           }
         };
 
-        mediaRecorder.start(5000);
+        mediaRecorder.start(1000);
         setIsRecording(true);
         if (socket) {
           socket.emit('recording-started', { userId: user._id, roomId, s3FileKey });

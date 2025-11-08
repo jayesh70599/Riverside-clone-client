@@ -14,7 +14,7 @@ export const useWebRTC = (roomId) => {
   const callRefs = useRef({});
 
   useEffect(() => {
-    const socketInstance = io.connect('http://localhost:5000');
+    const socketInstance = io.connect('https://riverside-clone-server.onrender.com');
     setSocket(socketInstance); // Set the socket in state
 
     const myPeer = new Peer(undefined, {
