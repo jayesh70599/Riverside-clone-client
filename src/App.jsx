@@ -62,7 +62,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
-              <Link to="/" className="flex-shrink-0 flex items-center text-xl font-bold text-white">
+              <Link to="/" className="shrink-0 flex items-center text-xl font-bold text-white">
                 Riverside Clone
               </Link>
             </div>

@@ -18,9 +18,9 @@ export const useWebRTC = (roomId) => {
     setSocket(socketInstance); // Set the socket in state
 
     const myPeer = new Peer(undefined, {
-      host: 'localhost',
-      port: 9000,
-      path: '/myapp',
+     // host: 'https://riverside-clone-server.onrender.com',
+     // port: 9000,
+     // path: '/myapp',
     });
     myPeerRef.current = myPeer;
 
