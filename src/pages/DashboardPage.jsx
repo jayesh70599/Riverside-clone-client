@@ -324,6 +324,7 @@ import { useAuth } from '../context/AuthContext';
 import studioService from '../services/studioService';
 import recordingService from '../services/recordingService';
 import sessionService from '../services/sessionService';
+import { useNavigate } from 'react-router-dom';
 
 // This component now has the 'Download Combined' button inside its collapsible area
 const SessionItem = ({ session, token }) => {
@@ -466,6 +467,9 @@ const DashboardPage = () => {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(true);
 
+   const [roomCode, setRoomCode] = useState('');
+  const navigate = useNavigate(); // 2. Initialize the navigate hook
+
   useEffect(() => {
     if (user) {
       studioService.getStudios(user.token)
@@ -487,6 +491,14 @@ const DashboardPage = () => {
     }
   };
 
+   const handleJoinStudio = (e) => {
+    e.preventDefault();
+    if (roomCode.trim()) {
+      navigate(`/studio/${roomCode.trim()}`);
+    }
+  };
+
+
   if (loading) return <div className="text-center p-8 text-gray-300">Loading...</div>;
 
   return (
@@ -502,6 +514,20 @@ const DashboardPage = () => {
             className="flex-grow px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           <button type="submit" className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">Create</button>
+        </form>
+      </div>
+
+      <div className="p-6 bg-gray-800 shadow-lg rounded-lg">
+        <h3 className="text-xl font-semibold text-white mb-4">Join a Studio</h3>
+        <form onSubmit={handleJoinStudio} className="flex items-center space-x-4">
+          <input 
+            type="text" 
+            placeholder="Enter Studio Code" 
+            value={roomCode} 
+            onChange={(e) => setRoomCode(e.target.value)}
+            className="flex-grow px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <button type="submit" className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">Join</button>
         </form>
       </div>
 

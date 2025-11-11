@@ -32,14 +32,42 @@ export const useWebRTC = (roomId) => {
           socketInstance.emit('join-room', roomId, peerId, user._id);
 
           myPeer.on('call', (call) => {
-            call.answer(stream);
-            call.on('stream', (userVideoStream) => addVideoStream(call.peer, userVideoStream));
+            const callerName = call.metadata?.name || 'Guest';
+            
+             const dataConnection = myPeer.connect(call.peer);
+
+            // 3. When the data connection is open, send your object
+            dataConnection.on('open', () => {
+              const myDataObject = {
+                name: user?.name || 'Anonymous',
+              };
+              
+              dataConnection.send(myDataObject);
+              call.answer(stream);
+            });
+
+            call.on('stream', (userVideoStream) => addVideoStream(call.peer, userVideoStream, callerName));
             callRefs.current[call.peer] = call;
           });
 
           socketInstance.on('user-connected', (newPeerId) => {
-            const call = myPeer.call(newPeerId, stream);
-            call.on('stream', (userVideoStream) => addVideoStream(newPeerId, userVideoStream));
+            const call = myPeer.call(newPeerId, stream, { 
+              metadata: { name: user?.name || 'Anonymous' } 
+            });
+
+            let newUserName = "";
+
+            myPeer.on('connection', (dataConnection) => {
+  
+              dataConnection.on('data', (data) => {
+                console.log('Received data from answeree:', data);
+                newUserName = data.name;
+              });
+            });
+            call.on('stream', (userVideoStream) => {
+              // The other user's name will be in their 'answer' metadata
+              addVideoStream(newPeerId, userVideoStream, newUserName);
+            });
             callRefs.current[newPeerId] = call;
           });
         });
@@ -65,10 +93,10 @@ export const useWebRTC = (roomId) => {
     };
   }, [roomId, user]);
 
-  function addVideoStream(peerId, stream) {
+  function addVideoStream(peerId, stream, name) {
     setPeers((prevPeers) => ({
       ...prevPeers,
-      [peerId]: stream,
+      [peerId]: {stream, name}
     }));
   }
   

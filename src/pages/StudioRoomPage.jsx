@@ -116,7 +116,10 @@ const StudioRoomPage = () => {
     }
   };
 
-  const participants = Object.entries(peers);
+  //const participants = Object.entries(peers);
+  //const participantCount = 1 + participants.length;
+
+  const participants = Object.entries(peers).filter(([id, data]) => data.stream);
   const participantCount = 1 + participants.length;
   
   // const isTwoParticipants = participantCount === 2;
@@ -174,8 +177,9 @@ const StudioRoomPage = () => {
           {participantCount === 2 && userStream && (
             <div className="grid grid-cols-2 gap-4 w-full h-full max-w-6xl">
               <VideoPlayer stream={userStream} isMuted={true} name={user?.name || 'You'} />
-              {getParticipants(1).map(([peerId, stream]) => (
-                <VideoPlayer key={peerId} stream={stream} name={`Peer ${peerId.substring(0, 6)}`} />
+              {getParticipants(1).map(([peerId, data]) => (
+                // <VideoPlayer key={peerId} stream={stream} name={`Peer ${peerId.substring(0, 6)}`} />
+                <VideoPlayer key={peerId} stream={data.stream} name={data.name} />
               ))}
             </div>
           )}
@@ -185,11 +189,11 @@ const StudioRoomPage = () => {
             <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-4">
               {/* Top Row */}
               <div className="col-span-1"><VideoPlayer stream={userStream} isMuted={true} name={user?.name || 'You'} /></div>
-              <div className="col-span-1">{getParticipants(1).map(([peerId, stream]) => (<VideoPlayer key={peerId} stream={stream} name={`Peer ${peerId.substring(0, 6)}`} />))}</div>
+              <div className="col-span-1">{getParticipants(1).map(([peerId, data]) => (<VideoPlayer key={peerId} stream={data.stream} name={data.name} />))}</div>
               {/* Bottom Row - Centered */}
               <div className="col-span-2 justify-self-center w-1/2">
-                {getParticipants(2).slice(1).map(([peerId, stream]) => (
-                  <VideoPlayer key={peerId} stream={stream} name={`Peer ${peerId.substring(0, 6)}`} />
+                {getParticipants(2).slice(1).map(([peerId, data]) => (
+                  <VideoPlayer key={peerId} stream={data.stream} name={data.name} />
                 ))}
               </div>
             </div>
@@ -199,7 +203,7 @@ const StudioRoomPage = () => {
             <div className={`w-full h-full grid gap-4 grid-cols-2`}>
               {userStream && <VideoPlayer stream={userStream} isMuted={true} name={user?.name || 'You'} />}
               {participants.map(([peerId, stream]) => (
-                <VideoPlayer key={peerId} stream={stream} name={`Peer ${peerId.substring(0, 6)}`} />
+                <VideoPlayer key={peerId} stream={data.stream} name={data.name} />
               ))}
             </div>
           )}
